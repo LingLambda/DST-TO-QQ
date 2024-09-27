@@ -10,7 +10,6 @@ end
 
 -- 相关配置
 IS_PREFIX = GetModConfigData("isPrefix")
-IS_KLEI_ID = GetModConfigData("isKleiId")
 SERVER_ID = GetModConfigData("serverId")
 HOST = 'http://127.0.0.1:5140'
 
@@ -43,13 +42,7 @@ sendGroupMsg = function(guid, userid, name, prefab, message, colour, whisper, is
     if GLOBAL.ThePlayer ~= nil then
         userIdStr = GLOBAL.ThePlayer.userid
     end
-    local toGroupJson = { message = "", serverId = SERVER_ID }
-    local userMsg = name .. '(' .. prefab .. ')：\n' .. message
-    local userInfo = ""
-    if IS_KLEI_ID then
-        userInfo = "\n\nkleiId:" .. userIdStr
-    end
-    toGroupJson.message = toGroupJson.message .. userMsg .. userInfo
+    local toGroupJson = {userName = name , survivorsName = prefab, message = message, serverId = SERVER_ID ,kleiId = userIdStr }
     printLog('将要发送到群聊:' .. jsonUtil.encode(toGroupJson))
     GLOBAL.TheSim:QueryServer(HOST .. '/send_msg', onSendGroupMsgResult, "POST", jsonUtil.encode(toGroupJson))
 end
@@ -77,7 +70,7 @@ end
 
 -- 解析获取群组消息结果
 function onGetGroupMsgResult(result, isSuccessful, resultCode)
-    if resultCode == 200 then
+    if resultCode == 200 and result then
         printLog("获取消息成功:" .. result)
         local messages = jsonUtil.decode(result).messages
         if #messages == 0 then
@@ -85,7 +78,7 @@ function onGetGroupMsgResult(result, isSuccessful, resultCode)
             return
         end
         for _, value in ipairs(messages) do
-            if value[4] == true then
+            if value[4] then
                 printLog('收到命令:' .. value[1])
                 runCommand(value)
             else

@@ -1,11 +1,11 @@
 name = "DST TO QQ"
 description = [[
-在QQ群中可以与游戏中聊天(基于xsluck大佬的项目),需要自己搭建koishi机器人,教程制作中
+在QQ群中可以与游戏中聊天(基于xsluck大佬的项目),需要自己搭建koishi机器人,教程见mod主页
 可在配置项启用特定消息转发,转发科雷id,开启日志
 默认端口为http post 5140
 ]]
 author = " ling , xsluck "
-version = "0.0.3"
+version = "0.0.4"
 forumthread = ""
 api_version = 10
 
@@ -23,18 +23,7 @@ configuration_options =
     {
         name = "isPrefix",
         label = "消息前缀",
-        hover = "启用则前面带:的消息才会回传",
-        options =
-        {
-            { description = "禁用", data = false },
-            { description = "启用", data = true },
-        },
-        default = false,
-    },
-    {
-        name = "isKleiId",
-        label = "显示科雷id",
-        hover = "启用则传到群里的消息会带上科雷id",
+        hover = "启用则前面带:的消息才会传到QQ",
         options =
         {
             { description = "禁用", data = false },
@@ -51,7 +40,7 @@ configuration_options =
             { description = "禁用", data = false },
             { description = "启用", data = true },
         },
-        default = false,
+        default = true,
     },
     {
         name = "serverId",
@@ -68,6 +57,7 @@ configuration_options =
             { description = "7", data = 7 },
             { description = "8", data = 8 },
             { description = "9", data = 9 },
-        }
+        },
+        default = 1,
     }
 }
